@@ -29,6 +29,14 @@ if check_command cmake; then
     cd ..
 fi
 
+if check_command redis-cli; then
+    yum -y install epel-release
+    yum -y update
+    yum -y install redis
+    systemctl start redis
+    systemctl enable redis
+ else
+
 # ZLMediaKit complie by source
 git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit
 cd ZLMediaKit

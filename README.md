@@ -1,4 +1,4 @@
-## wvp-pro 配置注意事项
+## wvp-zlm 配置注意事项
 
 - 1. zlm与assist要在一台机器上
 - 2. zlm与wvp-pro部署
@@ -44,3 +44,11 @@
 
 - 服务端口配置
 - 录像路径配置 与zlm中一致
+
+
+### 安装
+
+- cd  /home
+- git clone https://github.com/YangChengTeam/wvp_zlm.git wvp
+- 修改各个配置文件 主要是ip配置
+- sh install.sh
