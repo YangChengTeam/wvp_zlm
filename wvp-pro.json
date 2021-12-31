@@ -1,0 +1,16 @@
+{
+    "apps": [
+      {
+        "name": "zlm",
+        "script": "zlm.sh"
+      },
+      {
+        "name": "assist",
+        "script": "assist.sh"
+      }, {
+        "name": "wvp-pro",
+        "script": "wvp-pro.sh"
+      }  
+    ]
+}
+  
