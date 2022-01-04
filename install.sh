@@ -6,6 +6,8 @@
 #  Author：zhangkai <mzpbvsig@gmail.com>                               #
 #======================================================================#
 
+root=/home/wvp
+
 # Check command is exist
 check_command(){
     local command=$1 
@@ -18,6 +20,20 @@ check_command(){
 
 yum -y install gcc gcc-c++
 
+# Nginx complie by source
+if check_command cmake; then
+    if [[ ! -d nginx ]]; then
+        mkdir nginx
+    fi
+    wget https://nginx.org/download/nginx-1.20.2.tar.gz
+    tar -xvf nginx-1.20.2.tar.gz
+    cd nginx-1.20.2
+    ./configure --prefix=${root}/nginx
+    make 
+    make install
+    cd ..
+fi
+
 # CMake complie by source
 if check_command cmake; then
     wget https://cmake.org/files/v3.3/cmake-3.3.2.tar.gz
@@ -29,6 +45,7 @@ if check_command cmake; then
     cd ..
 fi
 
+# Redis install by yum source
 if check_command redis-cli; then
     yum -y install epel-release
     yum -y update
@@ -59,14 +76,37 @@ npm run build
 cd ..
 mvn package
 
+ls ${root}/wvp-GB28181-pro/target/*.jar > jar.txt
+jarfile='jar.txt'
+while read name; do
+    if [[ $name != "wvp-pro-2.0.jar" ]]; then
+       yes | cp -f $name "wvp-pro-2.0.jar"
+    fi
+done < $jarfile
 
+
+git clone https://gitee.com/18010473990/wvp-pro-assist.git
+cd wvp-pro-assist
+mvn package
+ls ${root}/wvp-pro-assist/target/*.jar > jar.txt
+jarfile='jar.txt'
+while read name; do
+    if [[ $name != "wvp-pro-assist.jar" ]]; then
+       yes | cp -f $name "wvp-pro-assist.jar"
+    fi
+done < $jarfile
+
+
+rm -f $jarfile
 
 cd ..
-root=/home/wvp
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
 cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
 cp -f config.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
+cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
 
 npm --registry=https://registry.npm.taobao.org install -g pm2
 pm2 stop wvp-pro.json
 pm2 start wvp-pro.json
+systemctl stop nginx
+systemctl start nginx
