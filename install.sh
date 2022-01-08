@@ -101,7 +101,7 @@ if [[ -e  ${wvpjar} ]];then
 fi
 mv target/*.jar ${wvpjar}
 
-
+cd ..
 git clone https://github.com/648540858/wvp-pro-assist
 cd wvp-pro-assist
 mvn package
@@ -111,9 +111,9 @@ if [[ -e  ${assistjar} ]];then
    rm -f ${assistjar}
 fi
 mv target/*.jar ${assistjar}
-
-
 cd ..
+
+
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
 cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
 cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
