@@ -38,7 +38,8 @@ if check_command nginx; then
     cp -f nginx /ect/init.d/
     chmod 755 /ect/init.d/nginx
     chkconfig --add nginx
-
+    systemctl enable nginx
+    systemctl start nginx
     cd ..
 fi
 
@@ -122,5 +123,4 @@ pm2 start wvp-pro.json
 
 
 
-systemctl enable nginx
-systemctl start nginx
+
