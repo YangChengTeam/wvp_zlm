@@ -27,7 +27,7 @@ if check_command cmake; then
     if [[ ! -d nginx ]]; then
         mkdir nginx
     fi
-    if [[ ! -e nginx-1.20.2.tar.gz ]];then
+    if [[ ! -e "nginx-1.20.2.tar.gz" ]];then
         wget https://nginx.org/download/nginx-1.20.2.tar.gz
         tar -xvf nginx-1.20.2.tar.gz
     fi
@@ -40,7 +40,7 @@ fi
 
 # CMake complie by source
 if check_command cmake; then
-    if [[ ! -e cmake-3.3.2.tar.gz ]];then
+    if [[ ! -e "cmake-3.3.2.tar.gz" ]];then
         wget https://cmake.org/files/v3.3/cmake-3.3.2.tar.gz
         tar -xvf cmake-3.3.2.tar.gz
     fi
