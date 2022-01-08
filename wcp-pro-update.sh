@@ -13,8 +13,8 @@ cd ${root}/wvp-GB28181-pro
 git pull
 mvn package
 
-ls ${root}/wvp-GB28181-pro/target/*.jar > jar.txt
 jarfile='jar.txt'
+ls ${root}/wvp-GB28181-pro/target/*.jar > $jarfile
 while read name; do
     if [[ $name != "wvp-pro-2.0.jar" ]]; then
        yes | cp -f $name "wvp-pro-2.0.jar"

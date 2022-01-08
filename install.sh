@@ -83,8 +83,9 @@ npm run build
 cd ..
 mvn package
 
-ls ${root}/wvp-GB28181-pro/target/*.jar > jar.txt
+
 jarfile='jar.txt'
+ls ${root}/wvp-GB28181-pro/target/*.jar > ${jarfile}
 while read name; do
     if [[ $name != "wvp-pro-2.0.jar" ]]; then
        yes | cp -f $name "wvp-pro-2.0.jar"
@@ -92,11 +93,10 @@ while read name; do
 done < $jarfile
 
 
-git clone https://gitee.com/18010473990/wvp-pro-assist.git
+git clone https://github.com/648540858/wvp-pro-assist
 cd wvp-pro-assist
 mvn package
-ls ${root}/wvp-pro-assist/target/*.jar > jar.txt
-jarfile='jar.txt'
+ls ${root}/wvp-pro-assist/target/*.jar > > ${jarfile}
 while read name; do
     if [[ $name != "wvp-pro-assist.jar" ]]; then
        yes | cp -f $name "wvp-pro-assist.jar"
