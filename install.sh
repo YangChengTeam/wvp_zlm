@@ -56,14 +56,16 @@ if check_command cmake; then
     cd ..
 fi
 
+yum -y install epel-release
+yum -y update
+
 # Redis install by yum source
 if check_command redis-cli; then
-    yum -y install epel-release
-    yum -y update
     yum -y install redis
     systemctl start redis
     systemctl enable redis
 fi
+
 
 sudo rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
 sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
