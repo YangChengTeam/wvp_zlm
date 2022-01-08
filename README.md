@@ -51,4 +51,5 @@
 - cd  /home
 - git clone https://github.com/YangChengTeam/wvp_zlm.git wvp
 - 修改各个配置文件 主要是ip配置
+- cd wvp
 - sh install.sh
