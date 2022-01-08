@@ -58,7 +58,7 @@ if check_command redis-cli; then
     yum -y install redis
     systemctl start redis
     systemctl enable redis
- else
+fi
 
 # ZLMediaKit complie by source
 git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit
@@ -115,5 +115,5 @@ cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
 npm --registry=https://registry.npm.taobao.org install -g pm2
 pm2 stop wvp-pro.json
 pm2 start wvp-pro.json
-systemctl stop nginx
-systemctl start nginx
+${root}/nginx/sbin/nginx -s stop
+${root}/nginx/sbin/nginx -s start
