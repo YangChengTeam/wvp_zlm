@@ -110,7 +110,6 @@ git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
 cd wvp-GB28181-pro/web_src/
 npm --registry=https://registry.npm.taobao.org install
 npm run build
-
 cd ..
 mvn package
 
@@ -119,8 +118,8 @@ if [[ -e  ${wvpjar} ]];then
    rm -f ${wvpjar}
 fi
 mv target/*.jar ${wvpjar}
-cd ..
 
+cd ${root}
 git clone https://github.com/648540858/wvp-pro-assist
 cd wvp-pro-assist
 mvn package
@@ -130,8 +129,9 @@ if [[ -e  ${assistjar} ]];then
    rm -f ${assistjar}
 fi
 mv target/*.jar ${assistjar}
-cd ..
 
+
+cd ${root}
 mkdir -p ${root}/ZLMediaKit/release/linux/Debug/www/record
 
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
