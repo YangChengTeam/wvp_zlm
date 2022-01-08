@@ -69,10 +69,11 @@ if check_command redis-cli; then
     systemctl enable redis
 fi
 
-
-sudo rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
-sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
-sudo yum install ffmpeg ffmpeg-devel
+if check_command ffmpeg; then
+    sudo rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+    sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+    sudo yum install ffmpeg ffmpeg-devel
+fi
 
 # ZLMediaKit complie by source
 git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit
@@ -104,6 +105,7 @@ if check_command node; then
     npm --registry=https://registry.npm.taobao.org install -g pm2
 fi
 
+cd ${root}
 git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
 cd wvp-GB28181-pro/web_src/
 npm --registry=https://registry.npm.taobao.org install
@@ -130,6 +132,7 @@ fi
 mv target/*.jar ${assistjar}
 cd ..
 
+mkdir -p ${root}/ZLMediaKit/release/linux/Debug/www/record
 
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
 cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
