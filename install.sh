@@ -23,7 +23,7 @@ yum -y install gcc gcc-c++
 yum -y install pcre-devel openssl openssl-devel
 
 # Nginx complie by source
-if check_command cmake; then
+if check_command nginx; then
     if [[ ! -d nginx ]]; then
         mkdir nginx
     fi
