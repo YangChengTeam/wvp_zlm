@@ -44,6 +44,9 @@ if check_command nginx; then
     chkconfig --add nginx
     systemctl enable nginx
     systemctl start nginx
+    mkdir -p ${root}/nginx/conf/vhost/
+    yes | cp -f nginx.conf ${root}/nginx/conf/
+    cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
 fi
 
 # CMake complie by source
@@ -134,12 +137,10 @@ mv target/*.jar ${assistjar}
 
 cd ${root}
 mkdir -p ${root}/ZLMediaKit/release/linux/Debug/www/record
-
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
 cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
 cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
-yes | cp -f nginx.conf ${root}/nginx/conf/
-cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
+
 
 pm2 start wvp-pro.json
 
