@@ -31,6 +31,7 @@ if check_command nginx; then
         mkdir nginx
     fi
     if [[ ! -e "nginx-1.20.2.tar.gz" ]];then
+        cd ${root}
         wget https://nginx.org/download/nginx-1.20.2.tar.gz
         tar -xvf nginx-1.20.2.tar.gz
     fi
@@ -43,12 +44,12 @@ if check_command nginx; then
     chkconfig --add nginx
     systemctl enable nginx
     systemctl start nginx
-    cd ..
 fi
 
 # CMake complie by source
 if check_command cmake; then
     if [[ ! -e "cmake-3.3.2.tar.gz" ]];then
+        cd ${root}
         wget https://cmake.org/files/v3.3/cmake-3.3.2.tar.gz
         tar -xvf cmake-3.3.2.tar.gz
     fi
@@ -56,7 +57,6 @@ if check_command cmake; then
     ./configure
     make -j4
     make install
-    cd ..
 fi
 
 yum -y install epel-release
