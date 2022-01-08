@@ -12,9 +12,10 @@ cd ${root}/wvp-pro-assist
 git pull
 mvn package
 
-if [[ -e  "target/wvp-pro-assist" ]];then
-   rm -f "target/wvp-pro-assist.jar"
+assistjar="target/wvp-pro-assist.jar"
+if [[ -e  ${assistjar} ]];then
+   rm -f ${assistjar}
 fi
-mv target/*.jar "target/wvp-pro-assist.jar"
+mv target/*.jar ${assistjar}
 
 

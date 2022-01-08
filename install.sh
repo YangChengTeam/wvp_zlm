@@ -18,7 +18,7 @@ check_command(){
     fi
 }
 
-yum -y wget
+yum -y install wget
 yum -y install gcc gcc-c++
 yum -y install pcre-devel openssl openssl-devel
 
@@ -93,29 +93,29 @@ npm run build
 cd ..
 mvn package
 
-if [[ -e  "target/wvp-pro.jar" ]];then
-   rm -f "target/wvp-pro.jar"
+wvpjar="target/wvp-pro.jar"
+if [[ -e  ${wvpjar} ]];then
+   rm -f ${wvpjar}
 fi
-mv target/*.jar "target/wvp-pro.jar"
+mv target/*.jar ${wvpjar}
 
 
 git clone https://github.com/648540858/wvp-pro-assist
 cd wvp-pro-assist
 mvn package
 
-if [[ -e  "target/wvp-pro-assist" ]];then
-   rm -f "target/wvp-pro-assist.jar"
+assistjar="target/wvp-pro-assist.jar"
+if [[ -e  ${assistjar} ]];then
+   rm -f ${assistjar}
 fi
-mv target/*.jar "target/wvp-pro-assist.jar"
+mv target/*.jar ${assistjar}
 
-
-
-rm -f $jarfile
 
 cd ..
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
 cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
 cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
+yes | cp -f nginx.conf ${root}/nginx/conf/
 cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
 
 npm --registry=https://registry.npm.taobao.org install -g pm2

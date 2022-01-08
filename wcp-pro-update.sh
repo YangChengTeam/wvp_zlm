@@ -13,11 +13,11 @@ cd ${root}/wvp-GB28181-pro
 git pull
 mvn package
 
-
-if [[ -e  "target/wvp-pro.jar" ]];then
-   rm -f "target/wvp-pro.jar"
+wvpjar="target/wvp-pro.jar"
+if [[ -e  ${wvpjar} ]];then
+   rm -f ${wvpjar}
 fi
-mv target/*.jar "target/wvp-pro.jar"
+mv target/*.jar ${wvpjar}
 
 
 
