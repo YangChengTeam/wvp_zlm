@@ -35,6 +35,10 @@ if check_command nginx; then
     ./configure --prefix=${root}/nginx
     make 
     make install
+    cp -f nginx /ect/init.d/
+    chmod 755 /ect/init.d/nginx
+    chkconfig --add nginx
+
     cd ..
 fi
 
@@ -60,6 +64,10 @@ if check_command redis-cli; then
     systemctl enable redis
 fi
 
+sudo rpm -v --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+sudo rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+sudo yum install ffmpeg ffmpeg-devel
+
 # ZLMediaKit complie by source
 git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit
 cd ZLMediaKit
@@ -72,8 +80,9 @@ cmake ..
 make -j4
 
 # wvp complie by source
-yum -y install java git maven nodejs 
-
+yum -y install java git maven  
+curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
+yum -y install nodejs    
 
 git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
 cd wvp-GB28181-pro/web_src/
@@ -83,25 +92,21 @@ npm run build
 cd ..
 mvn package
 
-
-jarfile='jar.txt'
-ls ${root}/wvp-GB28181-pro/target/*.jar > ${jarfile}
-while read name; do
-    if [[ $name != "wvp-pro-2.0.jar" ]]; then
-       yes | cp -f $name "wvp-pro-2.0.jar"
-    fi
-done < $jarfile
+if [[ -e  "target/wvp-pro.jar" ]];then
+   rm -f "target/wvp-pro.jar"
+fi
+mv target/*.jar "target/wvp-pro.jar"
 
 
 git clone https://github.com/648540858/wvp-pro-assist
 cd wvp-pro-assist
 mvn package
-ls ${root}/wvp-pro-assist/target/*.jar > > ${jarfile}
-while read name; do
-    if [[ $name != "wvp-pro-assist.jar" ]]; then
-       yes | cp -f $name "wvp-pro-assist.jar"
-    fi
-done < $jarfile
+
+if [[ -e  "target/wvp-pro-assist" ]];then
+   rm -f "target/wvp-pro-assist.jar"
+fi
+mv target/*.jar "target/wvp-pro-assist.jar"
+
 
 
 rm -f $jarfile
@@ -109,11 +114,13 @@ rm -f $jarfile
 cd ..
 cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
 cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
-cp -f config.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
+cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
 cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
 
 npm --registry=https://registry.npm.taobao.org install -g pm2
-pm2 stop wvp-pro.json
 pm2 start wvp-pro.json
-${root}/nginx/sbin/nginx -s stop
-${root}/nginx/sbin/nginx -s start
+
+
+
+systemctl enable nginx
+systemctl start nginx

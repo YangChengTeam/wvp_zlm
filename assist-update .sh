@@ -12,14 +12,9 @@ cd ${root}/wvp-pro-assist
 git pull
 mvn package
 
-jarfile='jar.txt'
-ls ${root}/wvp-pro-assist/target/*.jar > $jarfile
-while read name; do
-    if [[ $name != "wvp-pro-2.0.jar" ]]; then
-       yes | cp -f $name "wvp-pro-2.0.jar"
-    fi
-done < $jarfile
-
-rm -f $jarfile
+if [[ -e  "target/wvp-pro-assist" ]];then
+   rm -f "target/wvp-pro-assist.jar"
+fi
+mv target/*.jar "target/wvp-pro-assist.jar"
 
 
