@@ -27,8 +27,10 @@ if check_command cmake; then
     if [[ ! -d nginx ]]; then
         mkdir nginx
     fi
-    wget https://nginx.org/download/nginx-1.20.2.tar.gz
-    tar -xvf nginx-1.20.2.tar.gz
+    if [[ ! -e nginx-1.20.2.tar.gz ]];then
+        wget https://nginx.org/download/nginx-1.20.2.tar.gz
+        tar -xvf nginx-1.20.2.tar.gz
+    fi
     cd nginx-1.20.2
     ./configure --prefix=${root}/nginx
     make 
@@ -38,8 +40,10 @@ fi
 
 # CMake complie by source
 if check_command cmake; then
-    wget https://cmake.org/files/v3.3/cmake-3.3.2.tar.gz
-    tar -xvf cmake-3.3.2.tar.gz
+    if [[ ! -e cmake-3.3.2.tar.gz ]];then
+        wget https://cmake.org/files/v3.3/cmake-3.3.2.tar.gz
+        tar -xvf cmake-3.3.2.tar.gz
+    fi
     cd cmake-3.3.2
     ./configure
     make -j4
@@ -69,6 +73,7 @@ make -j4
 
 # wvp complie by source
 yum -y install java git maven nodejs 
+
 
 git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
 cd wvp-GB28181-pro/web_src/
