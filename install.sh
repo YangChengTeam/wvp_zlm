@@ -100,8 +100,8 @@ if [[ -e  ${wvpjar} ]];then
    rm -f ${wvpjar}
 fi
 mv target/*.jar ${wvpjar}
-
 cd ..
+
 git clone https://github.com/648540858/wvp-pro-assist
 cd wvp-pro-assist
 mvn package
