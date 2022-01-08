@@ -18,7 +18,10 @@ check_command(){
     fi
 }
 
-yum -y install wget
+if check_command wget; then
+    yum -y install wget
+fi
+
 yum -y install gcc gcc-c++
 yum -y install pcre-devel openssl openssl-devel
 
@@ -83,9 +86,23 @@ cmake ..
 make -j4
 
 # wvp complie by source
-yum -y install java git maven  
-curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
-yum -y install nodejs    
+if check_command java; then
+    yum -y install java
+fi
+
+if check_command git; then
+    yum -y install git   
+fi
+
+if check_command maven; then
+    yum -y install maven   
+fi
+
+if check_command node; then
+    curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
+    yum -y install nodejs 
+    npm --registry=https://registry.npm.taobao.org install -g pm2
+fi
 
 git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
 cd wvp-GB28181-pro/web_src/
@@ -120,7 +137,6 @@ cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
 yes | cp -f nginx.conf ${root}/nginx/conf/
 cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
 
-npm --registry=https://registry.npm.taobao.org install -g pm2
 pm2 start wvp-pro.json
 
 
