@@ -22,8 +22,10 @@ if check_command wget; then
     yum -y install wget
 fi
 
-yum -y install gcc gcc-c++
-yum -y install pcre-devel openssl openssl-devel
+if check_command gcc; then
+    yum -y install gcc gcc-c++
+    yum -y install pcre-devel openssl openssl-devel
+fi
 
 # Nginx complie by source
 if check_command nginx; then
@@ -41,7 +43,6 @@ if check_command nginx; then
     make install
     cp -f nginx /ect/init.d/
     chmod 755 /ect/init.d/nginx
-    chkconfig --add nginx
     systemctl enable nginx
     systemctl start nginx
     mkdir -p ${root}/nginx/conf/vhost/
