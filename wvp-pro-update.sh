@@ -19,5 +19,7 @@ if [[ -e  ${wvpjar} ]];then
 fi
 mv target/*.jar ${wvpjar}
 
+pm2 restart wvp-pro
+
 
 

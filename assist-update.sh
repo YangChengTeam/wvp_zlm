@@ -18,4 +18,6 @@ if [[ -e  ${assistjar} ]];then
 fi
 mv target/*.jar ${assistjar}
 
+pm2 restart assist
+
 

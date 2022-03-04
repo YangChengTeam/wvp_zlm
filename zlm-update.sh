@@ -15,6 +15,6 @@ cd build
 cmake ..
 make -j4
 
-
+pm2 restart zlm
 
 

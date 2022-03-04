@@ -27,29 +27,6 @@ if check_command gcc; then
     yum -y install pcre-devel openssl openssl-devel
 fi
 
-# Nginx complie by source
-if check_command nginx; then
-    if [[ ! -d nginx ]]; then
-        mkdir nginx
-    fi
-    if [[ ! -e "nginx-1.20.2.tar.gz" ]];then
-        cd ${root}
-        wget https://nginx.org/download/nginx-1.20.2.tar.gz
-        tar -xvf nginx-1.20.2.tar.gz
-    fi
-    cd nginx-1.20.2
-    ./configure --prefix=${root}/nginx
-    make 
-    make install
-    cp -f nginx /ect/init.d/
-    chmod 755 /ect/init.d/nginx
-    systemctl enable nginx
-    systemctl start nginx
-    mkdir -p ${root}/nginx/conf/vhost/
-    yes | cp -f nginx.conf ${root}/nginx/conf/
-    cp -f host-wvp-pro.conf ${root}/nginx/conf/vhost/
-fi
-
 # CMake complie by source
 if check_command cmake; then
     if [[ ! -e "cmake-3.3.2.tar.gz" ]];then
@@ -82,14 +59,16 @@ fi
 # ZLMediaKit complie by source
 cd ${root}
 git clone --depth 1 https://gitee.com/xia-chu/ZLMediaKit
-cd ZLMediaKit
-git submodule update --init
+if [[ -d ZLMediaKit ]];then
+    cd ZLMediaKit
+    git submodule update --init
 
-cd ZLMediaKit
-mkdir build
-cd build
-cmake ..
-make -j4
+    cd ZLMediaKit
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+fi
 
 # wvp complie by source
 if check_command java; then
@@ -112,38 +91,52 @@ fi
 
 cd ${root}
 git clone https://gitee.com/pan648540858/wvp-GB28181-pro.git
-cd wvp-GB28181-pro/web_src/
-npm --registry=https://registry.npm.taobao.org install
-npm run build
-cd ..
-mvn package
+if [[ -d wvp-GB28181-pro ]];then
+    cd wvp-GB28181-pro/web_src/
+    npm --registry=https://registry.npm.taobao.org install
+    npm run build
+    cd ..
+    mvn package
+    wvpjar="target/wvp-pro.jar"
+    if [[ -e  ${wvpjar} ]];then
+    rm -f ${wvpjar}
+    fi
+    mv target/*.jar ${wvpjar}
 
-wvpjar="target/wvp-pro.jar"
-if [[ -e  ${wvpjar} ]];then
-   rm -f ${wvpjar}
 fi
-mv target/*.jar ${wvpjar}
 
 cd ${root}
 git clone https://github.com/648540858/wvp-pro-assist
-cd wvp-pro-assist
-mvn package
+if [[ -d wvp-pro-assist ]];then
+    cd wvp-pro-assist
+    mvn package
 
-assistjar="target/wvp-pro-assist.jar"
-if [[ -e  ${assistjar} ]];then
-   rm -f ${assistjar}
+    assistjar="target/wvp-pro-assist.jar"
+    if [[ -e  ${assistjar} ]];then
+    rm -f ${assistjar}
+    fi
+    mv target/*.jar ${assistjar}
 fi
-mv target/*.jar ${assistjar}
-
 
 cd ${root}
-mkdir -p ${root}/ZLMediaKit/release/linux/Debug/www/record
-cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
-cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
-cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
+if [[ -d ZLMediaKit ]];then
+    mkdir -p ${root}/ZLMediaKit/release/linux/Debug/www/record
+    cp -f zlm.ini  ${root}/ZLMediaKit/release/linux/Debug/config.ini
+    pm2 start zlm.sh
+fi
+
+if [[ -d wvp-GB28181-pro ]];then
+    cp -f wvp-pro.yml ${root}/wvp-GB28181-pro/target/application.yml
+    pm2 start wvp-pro.sh
+fi
 
 
-pm2 start wvp-pro.json
+if [[ -d wvp-pro-assist ]];then
+    cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
+    pm2 start assist.sh
+fi
+
+
 
 
 
