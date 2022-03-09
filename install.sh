@@ -105,18 +105,6 @@ if [[ -d wvp-GB28181-pro ]];then
 
 fi
 
-cd ${root}
-git clone https://github.com/648540858/wvp-pro-assist
-if [[ -d wvp-pro-assist ]];then
-    cd wvp-pro-assist
-    mvn package
-
-    assistjar="target/wvp-pro-assist.jar"
-    if [[ -e  ${assistjar} ]];then
-    rm -f ${assistjar}
-    fi
-    mv target/*.jar ${assistjar}
-fi
 
 cd ${root}
 if [[ -d ZLMediaKit ]];then
@@ -131,10 +119,6 @@ if [[ -d wvp-GB28181-pro ]];then
 fi
 
 
-if [[ -d wvp-pro-assist ]];then
-    cp -f assist.yml ${root}/wvp-pro-assist/target/application.yml
-    pm2 start assist.sh
-fi
 
 
 
